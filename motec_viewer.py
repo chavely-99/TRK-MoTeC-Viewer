@@ -22,7 +22,7 @@ st.markdown("""
 <style>
     .block-container {padding-top: 1rem; padding-bottom: 0;}
     footer {visibility: hidden;}
-    h1 {font-size: 1.5rem !important; margin-bottom: 0.5rem !important;}
+    h1 {font-size: 1.8rem !important; margin-bottom: 0.5rem !important;}
     .stTabs [data-baseweb="tab-list"] {gap: 4px;}
     .stTabs [data-baseweb="tab"] {padding: 6px 12px; font-size: 0.9rem;}
     div[data-testid="stVerticalBlock"] > div {gap: 0.3rem !important;}
