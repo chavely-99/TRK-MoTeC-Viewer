@@ -7,6 +7,7 @@ from scipy import signal
 from scipy.ndimage import uniform_filter1d
 import tempfile
 import os
+import hashlib
 
 from ldparser import ldData
 
@@ -16,6 +17,46 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
+
+# ============ PASSWORD PROTECTION ============
+# Password hash (change this to your desired password)
+# To generate: hashlib.sha256("your_password".encode()).hexdigest()
+CORRECT_PASSWORD_HASH = "bdbda7509024a86a19c92ef2af08371951e4989d454f0ff13fc44570605ec5c0"  # "Trackhouse-2026"
+
+def check_password():
+    """Returns True if the user has entered the correct password."""
+
+    # Check if already authenticated in this session
+    if st.session_state.get("authenticated", False):
+        return True
+
+    # Show login form
+    st.markdown("""
+    <div style="display:flex;justify-content:center;align-items:center;min-height:60vh;">
+        <div style="text-align:center;max-width:400px;">
+            <h2 style="margin-bottom:1rem;">TRK MoTeC Viewer</h2>
+            <p style="color:#888;margin-bottom:2rem;">Enter password to continue</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        password = st.text_input("Password", type="password", key="password_input")
+        remember = st.checkbox("Remember me", value=True)
+
+        if st.button("Enter", type="primary", use_container_width=True):
+            if hashlib.sha256(password.encode()).hexdigest() == CORRECT_PASSWORD_HASH:
+                st.session_state["authenticated"] = True
+                st.rerun()
+            else:
+                st.error("Incorrect password")
+
+    return False
+
+# Check password before showing app
+if not check_password():
+    st.stop()
 
 # Compact styling
 st.markdown("""
